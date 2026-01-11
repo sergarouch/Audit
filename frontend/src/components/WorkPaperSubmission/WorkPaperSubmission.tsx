@@ -72,7 +72,23 @@ function WorkPaperSubmission({ onSubmissionSuccess }: Props) {
       onSubmissionSuccess();
       alert('Work paper submitted successfully!');
     } catch (error: any) {
-      alert(error.response?.data?.detail || 'Error submitting work paper');
+      console.error('Upload error:', error);
+      let errorMessage = 'Error submitting work paper';
+      
+      if (error.response?.data?.detail) {
+        // Handle FastAPI validation errors (array of errors)
+        if (Array.isArray(error.response.data.detail)) {
+          errorMessage = error.response.data.detail.map((e: any) => e.msg || e).join(', ');
+        } else if (typeof error.response.data.detail === 'string') {
+          errorMessage = error.response.data.detail;
+        }
+      } else if (typeof error.response?.data === 'string') {
+        errorMessage = error.response.data;
+      } else if (error.message) {
+        errorMessage = error.message;
+      }
+      
+      alert(errorMessage);
     } finally {
       setLoading(false);
     }

@@ -10,7 +10,7 @@ Base.metadata.create_all(bind=engine)
 # Create uploads directory
 os.makedirs("uploads", exist_ok=True)
 
-app = FastAPI(title="Audit Work Papers API", version="1.0.0")
+app = FastAPI(title="Audit Work Papers API", version="1.0.0", redirect_slashes=False)
 
 # CORS middleware
 app.add_middleware(

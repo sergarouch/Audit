@@ -44,7 +44,7 @@ async def create_work_paper(
     title: str = Form(...),
     description: Optional[str] = Form(None),
     form_data: Optional[str] = Form(None),  # JSON string
-    files: Optional[List[UploadFile]] = File(None),
+    files: List[UploadFile] = File(default=[]),
     db: Session = Depends(get_db),
     current_user: User = Depends(get_current_user)
 ):
@@ -70,11 +70,10 @@ async def create_work_paper(
     
     # Save uploaded files
     file_paths = []
-    if files:
-        for file in files:
-            if file.filename:
-                file_path = save_uploaded_file(file, db_work_paper.id)
-                file_paths.append(file_path)
+    for file in files:
+        if file.filename:
+            file_path = save_uploaded_file(file, db_work_paper.id)
+            file_paths.append(file_path)
     
     # Update work paper with file paths
     if file_paths:

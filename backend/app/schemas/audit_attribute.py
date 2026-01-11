@@ -30,6 +30,7 @@ class AuditAttributeCreate(AuditAttributeBase):
 class AuditAttributeUpdate(BaseModel):
     name: Optional[str] = None
     description: Optional[str] = None
+    attribute_type: Optional[AttributeType] = None
     rule_type: Optional[RuleType] = None
     rule_parameters: Optional[dict[str, Any]] = None
     criteria_text: Optional[str] = None
